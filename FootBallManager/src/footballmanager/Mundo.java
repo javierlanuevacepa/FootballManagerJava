@@ -235,11 +235,7 @@ public class Mundo {
             case "America"->{
                 for (Liga x : LigasAmerica){
                     ArrayList<Equipo> MejoresDos = x.getPrimerosDos();
-                    for (Equipo S : MejoresDos){
-                        EstadisticasEquipo Esta = new EstadisticasEquipo();
-                        Esta.NombreLigaOTorneo = NombreTorneo;
-                        S.EstadisticasCopas.add(Esta);
-                    }
+                    
                     EquiposTorneo.add(MejoresDos.get(0));
                     EquiposTorneo.add(MejoresDos.get(1));
                     
@@ -249,11 +245,7 @@ public class Mundo {
             case "America norte centro"->{
                 for (Liga x : LigasAmericanortecentro){
                     ArrayList<Equipo> MejoresDos = x.getPrimerosDos();
-                    for (Equipo S : MejoresDos){
-                        EstadisticasEquipo Esta = new EstadisticasEquipo();
-                        Esta.NombreLigaOTorneo = NombreTorneo;
-                        S.EstadisticasCopas.add(Esta);
-                    }
+                   
                     EquiposTorneo.add(MejoresDos.get(0));
                     EquiposTorneo.add(MejoresDos.get(1));
                     
@@ -264,11 +256,7 @@ public class Mundo {
             case "Europa"->{
                 for (Liga x : LigasEuropa){
                     ArrayList<Equipo> MejoresDos = x.getPrimerosDos();
-                    for (Equipo S : MejoresDos){
-                        EstadisticasEquipo Esta = new EstadisticasEquipo();
-                        Esta.NombreLigaOTorneo = NombreTorneo;
-                        S.EstadisticasCopas.add(Esta);
-                    }
+                   
                     EquiposTorneo.add(MejoresDos.get(0));
                     EquiposTorneo.add(MejoresDos.get(1));
                     
@@ -279,11 +267,7 @@ public class Mundo {
             case "Asia"->{
                 for (Liga x : LigasAsia){
                     ArrayList<Equipo> MejoresDos = x.getPrimerosDos();
-                    for (Equipo S : MejoresDos){
-                        EstadisticasEquipo Esta = new EstadisticasEquipo();
-                        Esta.NombreLigaOTorneo = NombreTorneo;
-                        S.EstadisticasCopas.add(Esta);
-                    }
+                    
                     EquiposTorneo.add(MejoresDos.get(0));
                     EquiposTorneo.add(MejoresDos.get(1));
                     
@@ -296,7 +280,7 @@ public class Mundo {
     }
     
     
-    
+    ArrayList<Futbolista> AgentesLibres = new ArrayList<>();
     
     //Habran metodos para los partidos en odnde el jugador se encuentre presente para poder ver toda la accion 
     //Index ocntinente 0 america 1 europa 2 asia 3 ame norte centro
@@ -465,9 +449,9 @@ public class Mundo {
                 
                 
                 if (x.equals(getEquipoPlayer())){
-                    x.terminoTemporada(true);
+                    x.terminoTemporada(true,this);
                 }else{
-                    x.terminoTemporada(false);
+                    x.terminoTemporada(false,this);
                 }
             }
         }
@@ -475,9 +459,9 @@ public class Mundo {
             x.terminoLigaEmpezarNueva();
             for (Equipo s : x.Equipos){
                 if (s.equals(getEquipoPlayer())){
-                    s.terminoTemporada(true);
+                    s.terminoTemporada(true,this);
                 }else{
-                   s.terminoTemporada(false);
+                   s.terminoTemporada(false,this);
                 }
             }
         }
@@ -485,9 +469,9 @@ public class Mundo {
             s.terminoLigaEmpezarNueva();
             for (Equipo x : s.Equipos){
                 if (x.equals(getEquipoPlayer())){
-                    x.terminoTemporada(true);
+                    x.terminoTemporada(true,this);
                 }else{
-                    x.terminoTemporada(false);
+                    x.terminoTemporada(false,this);
                 }
             }
         }
@@ -495,9 +479,9 @@ public class Mundo {
             c.terminoLigaEmpezarNueva();
             for (Equipo x : c.Equipos){
                 if (x.equals(getEquipoPlayer())){
-                    x.terminoTemporada(true);
+                    x.terminoTemporada(true,this);
                 }else{
-                    x.terminoTemporada(false);
+                    x.terminoTemporada(false,this);
                 }
             }
         }

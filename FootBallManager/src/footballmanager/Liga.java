@@ -139,7 +139,7 @@ public class Liga {
                     int[][] fechas = {
             {Audax, UnionEsp},       // Audax, Unionesp
             {Deportesco, Palest},    // Deportesco, Palest
-            {UnionEsp, CuricoUnido}, // Unionesp, Curicounido
+            {Unioon, CuricoUnido}, // Unionesp, Curicounido
             {Uchile, Maga},          // Uchile, Maga
             {Evert, Cokimunido},     // Evert, Cokimunido
             {Ucato, Cobre},          // Ucato, Cobre
@@ -356,7 +356,7 @@ public class Liga {
                     int[][] fechas = {
             {Audax, UnionEsp},       // Audax, Unionesp
             {Deportesco, Palest},    // Deportesco, Palest
-            {UnionEsp, CuricoUnido}, // Unionesp, Curicounido
+            {Unioon, CuricoUnido}, // Unionesp, Curicounido
             {Uchile, Maga},          // Uchile, Maga
             {Evert, Cokimunido},     // Evert, Cokimunido
             {Ucato, Cobre},          // Ucato, Cobre
@@ -568,6 +568,7 @@ public class Liga {
     public void terminoLigaEmpezarNueva(){
         for (Equipo Sulin : Equipos){
                      Sulin.EstadisticasLiga.ReinicioTorn();
+                     
         }
         Etapa = "1ra";
         Fecha = 1;

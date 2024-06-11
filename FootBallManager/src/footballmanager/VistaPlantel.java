@@ -207,6 +207,11 @@ public class VistaPlantel extends javax.swing.JFrame {
         jButton3.setFont(new java.awt.Font("Arial", 0, 24)); // NOI18N
         jButton3.setText("Renovar contrato");
         jButton3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jButton4.setBackground(new java.awt.Color(153, 255, 153));
         jButton4.setFont(new java.awt.Font("Arial", 0, 24)); // NOI18N
@@ -217,11 +222,21 @@ public class VistaPlantel extends javax.swing.JFrame {
         jButton5.setFont(new java.awt.Font("Arial", 0, 24)); // NOI18N
         jButton5.setText("Liberar jugador");
         jButton5.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
 
         jButton6.setBackground(new java.awt.Color(153, 255, 153));
         jButton6.setFont(new java.awt.Font("Arial", 0, 24)); // NOI18N
         jButton6.setText("Preguntarle sobre retiro");
         jButton6.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
 
         jLabel3.setFont(new java.awt.Font("Arial", 0, 24)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
@@ -261,6 +276,11 @@ public class VistaPlantel extends javax.swing.JFrame {
         jButton7.setFont(new java.awt.Font("Arial", 0, 24)); // NOI18N
         jButton7.setText("Asignar dorsal");
         jButton7.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
 
         Ataque.setFont(new java.awt.Font("Arial", 0, 24)); // NOI18N
         Ataque.setForeground(new java.awt.Color(255, 255, 255));
@@ -548,6 +568,79 @@ public class VistaPlantel extends javax.swing.JFrame {
         clearFields();
         RenderizarVista();
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        // TODO add your handling code here:
+        if (Eleccion!=3 && IndexJug!=999){
+            switch (Eleccion){
+                case 0 ->{
+                    wor.getEquipoPlayer().OnceInicial.get(IndexJug).respuestaSobreRetiro();
+                }
+                case 1 ->{
+                    wor.getEquipoPlayer().Reserva.get(IndexJug).respuestaSobreRetiro();
+                }
+            }
+        }else{
+            JOptionPane.showMessageDialog(null, 
+                              "No has seleccionado a ningun jugador", 
+                              "!!!", 
+                              JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        // TODO add your handling code here:
+        if (Eleccion!=3 && IndexJug!=999){
+        
+        wor.getEquipoPlayer().AsignarDorsal(Eleccion, IndexJug);
+        clearFields();
+        RenderizarVista();
+        
+        }else{
+            JOptionPane.showMessageDialog(null, 
+                              "No has seleccionado a ningun jugador", 
+                              "!!!", 
+                              JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // TODO add your handling code here:
+         if (Eleccion!=3 && IndexJug!=999){
+        
+            if (Eleccion==1){
+                if (wor.getEquipoPlayer().liberarJugador(wor, IndexJug)==true){
+                    clearFields();
+                    RenderizarVista();
+                }
+            }else{
+                JOptionPane.showMessageDialog(null, 
+                              "Para liberar a un jugador tiene que estar en reservas!", 
+                              "!!!", 
+                              JOptionPane.WARNING_MESSAGE);
+            }
+        
+        }else{
+            JOptionPane.showMessageDialog(null, 
+                              "No has seleccionado a ningun jugador", 
+                              "!!!", 
+                              JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        if (Eleccion!=3 && IndexJug!=333){
+            VistaRenovarContrato Gu = new VistaRenovarContrato(wor,Eleccion,IndexJug);
+            Gu.setVisible(true);
+            this.dispose();
+        }else{
+            JOptionPane.showMessageDialog(null, 
+                              "No has seleccionado a ningun jugador", 
+                              "!!!", 
+                              JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     public String[] getJugadoresLista(int Elecc){
         switch (Elecc){
