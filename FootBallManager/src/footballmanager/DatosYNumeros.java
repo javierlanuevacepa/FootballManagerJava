@@ -292,7 +292,12 @@ String[] apellidosTAIL = {
     String[] LigasAsia = {"Liga Japonesa","Liga China","Liga Coreana","Liga Arabia Saudita","Liga Australia","Liga India","Liga Indonesia","Liga Tailandia"};
     //Solo 16 equipos por liga
     
-    
+    String[] paises = {
+    "Chile", "Brasil", "Argentina", "Venezuela", "Peru", "Uruguay", "Bolivia", "Colombia",
+    "Mexico", "Estados Unidos", "Costa Rica", "El Salvador", "Guatemala", "Cuba", "Panama", "Honduras",
+    "Espana", "Inglaterra", "Italia", "Portugal", "Rusia", "Alemania", "Escocia", "Turquia",
+    "Japon", "China", "Corea", "Arabia saudita", "Australia", "India", "Indonesia", "Tailandia"
+    };
     
     String[] equiposJP = {
     "Kashima Antlers", "Yokohama F. Marinos", "Urawa Red Diamonds", "Gamba Osaka", "FC Tokyo", "Kawasaki Frontale",

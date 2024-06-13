@@ -4,6 +4,9 @@
  */
 package footballmanager;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.stream.Collectors;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 /**
@@ -26,7 +29,7 @@ public class Equipo {
     ArrayList<Integer> Dorsales = new ArrayList<>();
     
     
-    ArrayList<EstadisticasEquipo> EstadisticasCopas = new ArrayList<>();
+   
     
     int EntrenosPorEquipo = 2;
     
@@ -44,7 +47,7 @@ public class Equipo {
     Estadio EstEquipo;
     
     //AQui las estadisticas de torneo y etc se reiniciaran con cada nuevo inicio de temporada
-    ArrayList<EstadisticasEquipo> TorneoParticipacion = new ArrayList<>();
+   
     
     public Equipo(String NombreEquipo, int Dinero, int Fans,EstadisticasEquipo EstadisticasLiga,Estadio EstEquipo) {
         this.NombreEquipo = NombreEquipo;
@@ -198,6 +201,24 @@ public class Equipo {
         return calcularAtaque()+calcularMedioCampo()+calcularDefensa()+calcularPorteria();
     }
     
+    public double poderTotalNum(ArrayList<Futbolista> x ){
+        double ataque = 0, mediocampo = 0, defensa = 0, porteria = 0;
+
+        for (Futbolista j : x) {
+            ataque += j.Tiro;
+            mediocampo += j.Pase;
+            defensa += j.Defensa;
+            porteria += j.Porteria;
+        }
+
+        ataque /= 11;
+        mediocampo /= 11;
+        defensa /= 11;
+        porteria /= 11;
+
+        return ataque + mediocampo + defensa + porteria;
+    }
+    
     
     public void CambioJugador(int IndexOnce, int IndexReserva){
         Futbolista Once = OnceInicial.get(IndexOnce);
@@ -317,14 +338,14 @@ public class Equipo {
         
         for (Futbolista on : OnceInicial){
             on.ContratoJugador.TemporadasContrato--;
-            if (on.ContratoJugador.TemporadasContrato==0){
+            if (on.ContratoJugador.TemporadasContrato<=0){
                 Godbie.add(on);
                 Adios+="\n-"+on.Nombre+" "+on.Apellido+"\n";
             }
         }
         for (Futbolista od : Reserva){
             od.ContratoJugador.TemporadasContrato--;
-            if (od.ContratoJugador.TemporadasContrato==0){
+            if (od.ContratoJugador.TemporadasContrato<=0){
                 Godbie.add(od);
                 Adios+="\n-"+od.Nombre+" "+od.Apellido+"\n";
             }
@@ -496,49 +517,203 @@ public class Equipo {
     
     //Esto verá que hayan 11 jugadores y en caso que no hayan que se llene automaticamente
     public void checkOnceInicial(Mundo wir){
+       
         if (OnceInicial.size()<11){
-            while (OnceInicial.size()!=11){
-                
-                if (getCantidadPosicionesOnceOreserva(0,"Atacante")<1){
-                    if (getCantidadPosicionesOnceOreserva(1,"Atacante")<1){
-                        //Generar algun weon random
-                    }else{
-                        
-                        
-                    }
-                }
-                
-                if (getCantidadPosicionesOnceOreserva(0,"Mediocampista")<1){
-                    if (getCantidadPosicionesOnceOreserva(1,"Mediocampista")<1){
-                        //Generar algun weon random
-                    }else{
-                        
-                        
-                    }
-                }
-                
-                if (getCantidadPosicionesOnceOreserva(0,"Defensa")<1){
-                    if (getCantidadPosicionesOnceOreserva(1,"Defensa")<1){
-                        //Generar algun weon random
-                    }else{
-                        
-                    }
-                }
-                
-                if (getCantidadPosicionesOnceOreserva(0,"Arquero")!=1){
-                    if (getCantidadPosicionesOnceOreserva(1,"Atacante")<1){
-                        //Generar algun weon random
-                    }else{
-                        
-                        
-                    }
-                }
+            checkReservas(wir);
+            combiMejorEquipos();
+            
+            
+        }
+    }
+    
+    
+    
+    
+    
+    //Esta esta buena pero es muy lenta poirque probaba como billones de combinaciones
+    public void setCombinacionMasPoderosa(){
+        ArrayList<Futbolista> MejorOnceInicial = new ArrayList<>();
+        
+        Reserva.addAll(OnceInicial);
+        
+        OnceInicial.clear();
+        
+        double mejorPoderTotal = 0;
+        
+        
+        int[] indices = new int[11];
+        for (int i = 0; i<11;i++){
+            indices[i] = i;
+        }
+        
+        while(indices[10]<Reserva.size()){
+            ArrayList<Futbolista> onceInicialActual = new ArrayList<>();
+            
+            for (int i : indices){
+                onceInicialActual.add(Reserva.get(i));
+            }
+            
+            double poderTotalActual = poderTotalNum(onceInicialActual);
+            
+            if (poderTotalActual > mejorPoderTotal){
+                mejorPoderTotal = poderTotalActual;
+                MejorOnceInicial = onceInicialActual;
+            }
+            
+            int t = 10;
+            
+            while (t!=0 && indices[t] == Reserva.size() - 11 + t ){
+                t--;
+            }
+            indices[t]++;
+            for (int i = t+1;i<11;i++){
+                indices[i]  = indices[i-1] + 1;
+            }
+        }
+        
+        OnceInicial = MejorOnceInicial;
+        
+        
+        for (Futbolista y : OnceInicial){
+            if (Reserva.contains(y)){
+                Reserva.remove(y);
+            }
+        }
+    }
+    
+    
+    //En caso de que no haya jugador de algo crearlo
+    public void checkReservas(Mundo wir){
+        DatosYNumeros dat = new DatosYNumeros();
+        if (getCantidadPosicionesOnceOreserva(1,"Atacante")<1){
+            for (int i = 0; i<2;i++){
+                Reserva.add(wir.GenerarRandomPlayer(this, "Atacante",dat.RetornarRandomString(dat.paises)));
+            }
+        }
+        if (getCantidadPosicionesOnceOreserva(1,"Mediocampista")<1){
+            for (int i = 0; i<2;i++){
+                Reserva.add(wir.GenerarRandomPlayer(this, "Mediocampista",dat.RetornarRandomString(dat.paises)));
+            }
+        }
+        if (getCantidadPosicionesOnceOreserva(1,"Defensa")<1){
+            for (int i = 0; i<2;i++){
+                Reserva.add(wir.GenerarRandomPlayer(this, "Defensa",dat.RetornarRandomString(dat.paises)));
+            }
+        }
+        if (getCantidadPosicionesOnceOreserva(1,"Arquero")<1){
+            for (int i = 0; i<2;i++){
+                Reserva.add(wir.GenerarRandomPlayer(this, "Arquero",dat.RetornarRandomString(dat.paises)));
             }
         }
     }
     
     
     
+    public void combiMejorEquipos(){
+        ArrayList<Futbolista> MejorOnceInicial = new ArrayList<>();
+        
+        Reserva.addAll(OnceInicial);
+        
+        OnceInicial.clear();
+
+        // Seleccionamos los mejores 3 delanteros basados en el atributo de tiro
+        Reserva.sort(Comparator.comparingDouble(j -> -j.Tiro));
+        MejorOnceInicial.addAll(Reserva.subList(0, 3));
+
+        // Seleccionamos los mejores 3 mediocampistas basados en el atributo de pase
+        Reserva.sort(Comparator.comparingDouble(j -> -j.Pase));
+        MejorOnceInicial.addAll(Reserva.subList(0, 3));
+
+        // Seleccionamos los mejores 3 defensas basados en el atributo de defensa
+        Reserva.sort(Comparator.comparingDouble(j -> -j.Defensa));
+        MejorOnceInicial.addAll(Reserva.subList(0, 3));
+
+        // Seleccionamos el mejor portero basado en el atributo de porteria
+        Reserva.sort(Comparator.comparingDouble(j -> -j.Porteria));
+        MejorOnceInicial.add(Reserva.get(0));
+
+        // Llenamos los 11 jugadores con los mejores restantes basados en el valor total
+
+        
+
+        
+        Futbolista extra = Reserva.get(0);
+        
+        for (Futbolista k : Reserva){
+            if (!k.Posicion.equals("Arquero")){
+                extra = k;
+            }
+        }
+        Reserva.remove(extra);
+        MejorOnceInicial.add(extra);
+        
+        OnceInicial = MejorOnceInicial;
+        
+        
+        Reserva.stream().distinct().collect(Collectors.toList());
+        
+        if (getCantidadPosicionesOnceOreserva(1,"Arquero")>1){
+            for (Futbolista cv : OnceInicial){
+                if (cv.Posicion.equals("Arquero") && cv.Porteria<getMejor("Arquero").Porteria){
+                    extra = cv;
+                }
+            }
+            OnceInicial.remove(extra);
+            Reserva.add(extra);
+            for (Futbolista k : Reserva){
+            if (!k.Posicion.equals("Arquero") && !OnceInicial.contains(k)){
+                extra = k;
+            }
+             }
+            Reserva.remove(extra);
+            OnceInicial.add(extra);
+            
+        }
+        
+        
+        
+        for (Futbolista x : OnceInicial){
+            if (Reserva.contains(x)){
+                Reserva.remove(x);
+            }
+        }
+        
+
+        
+    }
+    
+    
+    
+    public Futbolista getMejor(String Posicion){
+        Futbolista vessel = OnceInicial.get(0);
+       
+                for (Futbolista y : OnceInicial){
+                    switch (Posicion){
+                        case "Arquero"->{
+                            if (y.Porteria>vessel.Porteria){
+                                vessel = y;
+                            }
+                        }
+                        case "Atacante"->{
+                            if (y.Tiro>vessel.Tiro){
+                                vessel = y;
+                            }
+                        }
+                        case "Mediocampista"->{
+                            if (y.Pase>vessel.Pase){
+                                vessel = y;
+                            }
+                        }
+                        case "Defensa"->{
+                            if (y.Defensa>vessel.Defensa){
+                                vessel = y;
+                            }
+                        }
+                    }
+                }
+        return vessel;
+       
+    }
     
     
     public void contratorPorTerminarAviso(){
@@ -585,6 +760,9 @@ public class Equipo {
             si.OfertasSobreContrato = 3;
         }
         checkContratosJugadores(world,Player);
+        checkOnceInicial(world);
+        
+        this.Dinero-=getUtilidadesTotales();
         
     }
     
@@ -611,6 +789,23 @@ public class Equipo {
             }
         }
         return false;
+    }
+    
+    public void retirarJugador(Futbolista Jugador){
+        if (Jugador.RetiroListo==true){
+            Retirados.add(Jugador);
+            Reserva.remove(Jugador);
+                JOptionPane.showMessageDialog(null, 
+                              Jugador.Nombre+" "+Jugador.Apellido+" se retiró en un partido\nde despedida frente a "+this.Fans+" fans.", 
+                              "Adios y gracias por todo!", 
+                              JOptionPane.INFORMATION_MESSAGE);
+            
+        }else{
+            JOptionPane.showMessageDialog(null, 
+                              Jugador.Nombre+" "+Jugador.Apellido+" no está listo para retirarse!", 
+                              "!!!", 
+                              JOptionPane.WARNING_MESSAGE);
+        }
     }
     
 }

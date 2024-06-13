@@ -28,6 +28,7 @@ public class Futbolista {
     int PreguntasSobreRetiro = 1;
     int OfertasSobreContrato = 3; 
     
+    boolean RetiroListo = false;
     boolean Lesionado = false;
     String IntensidadEntrenamiento = "Normal";
     Contrato ContratoJugador;
@@ -351,6 +352,7 @@ public class Futbolista {
                               dat.RetornarRandomString(SiRetirarme), 
                               this.Nombre+" "+this.Apellido, 
                               JOptionPane.INFORMATION_MESSAGE);
+                this.RetiroListo = true;
             }else{
                 JOptionPane.showMessageDialog(null, 
                               dat.RetornarRandomString(NoRetirar), 
@@ -368,6 +370,7 @@ public class Futbolista {
                               dat.RetornarRandomString(SiRetirarme), 
                               this.Nombre+" "+this.Apellido, 
                               JOptionPane.INFORMATION_MESSAGE);
+                         this.RetiroListo = true;
                     }else{
                         Suler.put(0, dat.RetornarRandomString(Quiza));
                         Suler.put(1,dat.RetornarRandomString(NoRetirar));
@@ -387,6 +390,7 @@ public class Futbolista {
                               dat.RetornarRandomString(SiRetirarme), 
                               this.Nombre+" "+this.Apellido, 
                               JOptionPane.INFORMATION_MESSAGE);
+                         this.RetiroListo = true;
                     }else{
                         Suler.put(0, dat.RetornarRandomString(Quiza));
                         Suler.put(1,dat.RetornarRandomString(NoRetirar));
@@ -402,6 +406,7 @@ public class Futbolista {
                               dat.RetornarRandomString(SiRetirarme), 
                               this.Nombre+" "+this.Apellido, 
                               JOptionPane.INFORMATION_MESSAGE);
+                        this.RetiroListo = true;
                     }else{
                         Suler.put(0, dat.RetornarRandomString(Quiza));
                         Suler.put(1,dat.RetornarRandomString(NoRetirar));
@@ -421,6 +426,7 @@ public class Futbolista {
                               dat.RetornarRandomString(SiRetirarme), 
                               this.Nombre+" "+this.Apellido, 
                               JOptionPane.INFORMATION_MESSAGE);
+                         this.RetiroListo = true;
                     }else{
                         Suler.put(0, dat.RetornarRandomString(Quiza));
                         Suler.put(1,dat.RetornarRandomString(NoRetirar));
@@ -440,6 +446,7 @@ public class Futbolista {
                               dat.RetornarRandomString(SiRetirarme), 
                               this.Nombre+" "+this.Apellido, 
                               JOptionPane.INFORMATION_MESSAGE);
+                         this.RetiroListo = true;
                     }else{
                         Suler.put(0, dat.RetornarRandomString(Quiza));
                         Suler.put(1,dat.RetornarRandomString(NoRetirar));
@@ -455,6 +462,7 @@ public class Futbolista {
                               dat.RetornarRandomString(SiRetirarme), 
                               this.Nombre+" "+this.Apellido, 
                               JOptionPane.INFORMATION_MESSAGE);
+                        this.RetiroListo = true;
                     }else{
                         Suler.put(0, dat.RetornarRandomString(Quiza));
                         Suler.put(1,dat.RetornarRandomString(NoRetirar));
@@ -474,6 +482,7 @@ public class Futbolista {
                               dat.RetornarRandomString(SiRetirarme), 
                               this.Nombre+" "+this.Apellido, 
                               JOptionPane.INFORMATION_MESSAGE);
+                         this.RetiroListo = true;
                     }else{
                         Suler.put(0, dat.RetornarRandomString(Quiza));
                         Suler.put(1,dat.RetornarRandomString(NoRetirar));
@@ -493,6 +502,7 @@ public class Futbolista {
                               dat.RetornarRandomString(SiRetirarme), 
                               this.Nombre+" "+this.Apellido, 
                               JOptionPane.INFORMATION_MESSAGE);
+                         this.RetiroListo = true;
                     }else{
                         Suler.put(0, dat.RetornarRandomString(Quiza));
                         Suler.put(1,dat.RetornarRandomString(NoRetirar));
@@ -508,6 +518,7 @@ public class Futbolista {
                               dat.RetornarRandomString(SiRetirarme), 
                               this.Nombre+" "+this.Apellido, 
                               JOptionPane.INFORMATION_MESSAGE);
+                        this.RetiroListo = true;
                     }else{
                         Suler.put(0, dat.RetornarRandomString(Quiza));
                         Suler.put(1,dat.RetornarRandomString(NoRetirar));
@@ -527,6 +538,7 @@ public class Futbolista {
                               dat.RetornarRandomString(SiRetirarme), 
                               this.Nombre+" "+this.Apellido, 
                               JOptionPane.INFORMATION_MESSAGE);
+                            this.RetiroListo = true;
                         }else{
                             Suler.put(0, dat.RetornarRandomString(Quiza));
                         Suler.put(1,dat.RetornarRandomString(NoRetirar));
@@ -542,6 +554,7 @@ public class Futbolista {
                               dat.RetornarRandomString(SiRetirarme), 
                               this.Nombre+" "+this.Apellido, 
                               JOptionPane.INFORMATION_MESSAGE);
+                            this.RetiroListo = true;
                         }else{
                             Suler.put(0, dat.RetornarRandomString(Quiza));
                         Suler.put(1,dat.RetornarRandomString(NoRetirar));
@@ -561,6 +574,7 @@ public class Futbolista {
                               dat.RetornarRandomString(SiRetirarme), 
                               this.Nombre+" "+this.Apellido, 
                               JOptionPane.INFORMATION_MESSAGE);
+                        this.RetiroListo = true;
                     }else{
                         Suler.put(0, dat.RetornarRandomString(Quiza));
                         Suler.put(1,dat.RetornarRandomString(NoRetirar));

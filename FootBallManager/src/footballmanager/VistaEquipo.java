@@ -6,7 +6,9 @@ package footballmanager;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 
 /**
@@ -427,12 +429,22 @@ public class VistaEquipo extends javax.swing.JFrame {
         Mejoras.setForeground(new java.awt.Color(255, 255, 255));
         Mejoras.setText("Mejoras");
         Mejoras.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        Mejoras.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MejorasActionPerformed(evt);
+            }
+        });
 
         RetirarJug.setBackground(new java.awt.Color(0, 204, 102));
         RetirarJug.setFont(new java.awt.Font("Arial", 0, 36)); // NOI18N
         RetirarJug.setForeground(new java.awt.Color(255, 255, 255));
         RetirarJug.setText("Retirar jugador/Sellar leyenda");
         RetirarJug.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        RetirarJug.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RetirarJugActionPerformed(evt);
+            }
+        });
 
         Fondos.setFont(new java.awt.Font("Arial", 0, 36)); // NOI18N
         Fondos.setForeground(new java.awt.Color(255, 255, 255));
@@ -637,6 +649,61 @@ public class VistaEquipo extends javax.swing.JFrame {
         wor.getEquipoPlayer().contratorPorTerminarAviso();
     }//GEN-LAST:event_RetirarJug2ActionPerformed
 
+    private void RetirarJugActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RetirarJugActionPerformed
+        // TODO add your handling code here:
+        
+        String[] Opciones = {"Retirar jugador","Ver jugadores retirados","Salir"};
+        
+        int Respuesta = JOptionPane.showOptionDialog(null, "¿Que deseas hacer?", "Leyendas",
+         JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, Opciones, Opciones[0]);
+        
+        switch (Respuesta){
+            case 0 ->{
+                
+                JComboBox osciones = new JComboBox(getJugadoresReservaP());
+                 String[] Opds = {"Retirar","Arrepentirse"};
+                 
+                    int IndexCambio = JOptionPane.showOptionDialog(null, osciones,"Elige el jugador",JOptionPane.DEFAULT_OPTION,JOptionPane.PLAIN_MESSAGE,null,Opds,
+                Opds[0]);
+                    
+                    switch (IndexCambio){
+                        case 0 ->{
+                            wor.getEquipoPlayer().retirarJugador(wor.getEquipoPlayer().Reserva.get(osciones.getSelectedIndex()));
+                        }
+                    }
+            }
+            case 1 ->{
+                
+                if (!wor.getEquipoPlayer().Retirados.isEmpty()){
+                    
+                    String Leyens = "";
+                    
+                    for (Futbolista leyen : wor.getEquipoPlayer().Retirados){
+                        Leyens+="\n"+leyen.Nombre+" "+leyen.Apellido+" ("+leyen.Posicion+") "+leyen.Edad+" años."+"\n";
+                    }
+                    
+                    JOptionPane.showMessageDialog(null, 
+              Leyens, 
+              "Leyendas del club.", 
+               JOptionPane.INFORMATION_MESSAGE);
+                    
+                }else{
+                    JOptionPane.showMessageDialog(null, 
+              "Aun no hay jugadores retirados.", 
+              "Imposible", 
+               JOptionPane.WARNING_MESSAGE);
+                } 
+            }
+        }
+    }//GEN-LAST:event_RetirarJugActionPerformed
+
+    private void MejorasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MejorasActionPerformed
+        // TODO add your handling code here:
+        
+        wor.getEquipoPlayer().combiMejorEquipos();
+       
+    }//GEN-LAST:event_MejorasActionPerformed
+
     
     
     Mundo wor;
@@ -667,10 +734,22 @@ public class VistaEquipo extends javax.swing.JFrame {
         
         Temp.setText("Temporada "+AgnoTemporada);
         
-        
-        
-        
+
     }
+    
+    
+    
+    public String[] getJugadoresReservaP(){
+        ArrayList<String> Jugadores = new ArrayList<>();
+        
+        for (Futbolista y : wor.getEquipoPlayer().Reserva){
+            Jugadores.add(y.Nombre+" "+y.Apellido+"("+y.Posicion+")");
+        }
+        
+        return Jugadores.toArray(String[]::new);
+    }
+    
+   
     
     
     
