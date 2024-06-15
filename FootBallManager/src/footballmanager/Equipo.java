@@ -3,12 +3,16 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package footballmanager;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.stream.Collectors;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 /**
  *
  * @author wesker
@@ -302,7 +306,7 @@ public class Equipo {
     
     
     public int getUtilidadesTotales(){
-        return getGastoSueldo() + EstEquipo.GastoMantencion;
+        return getGastoSueldo() + EstEquipo.GastoMantencion * 12;
     }
     
     
@@ -759,6 +763,11 @@ public class Equipo {
             si.PreguntasSobreRetiro = 1;
             si.OfertasSobreContrato = 3;
         }
+        for (Futbolista so : Retirados){
+            so.Edad++;
+        }
+        
+        
         checkContratosJugadores(world,Player);
         checkOnceInicial(world);
         
@@ -807,5 +816,149 @@ public class Equipo {
                               JOptionPane.WARNING_MESSAGE);
         }
     }
+    
+    public void ofrecerTransferencia(){
+    
+    
+    }
+    
+    public void cambiarNombreEstadio(String nuevoNombre){
+        this.EstEquipo.NombreEstadio = nuevoNombre;
+        
+        JOptionPane.showMessageDialog(null, 
+                              "Nombre de estadio cambiado correctamente.", 
+                              "Exito!", 
+                              JOptionPane.INFORMATION_MESSAGE);
+    }
+    
+    public boolean invertirEstadio(){
+        if (this.Dinero<10000000){
+            JOptionPane.showMessageDialog(null, 
+                              "No te alcanza...", 
+                              "Ups", 
+                              JOptionPane.WARNING_MESSAGE);
+            return false;
+        }else{
+            this.EstEquipo.Capacidad+=1000;
+            this.EstEquipo.DineroInvertido+=10000000;
+            this.Dinero-=10000000;
+            JOptionPane.showMessageDialog(null, 
+                              "Inversión realizada correctamente!", 
+                              "Yujuu", 
+                              JOptionPane.INFORMATION_MESSAGE);
+            return true;
+        }
+    }
+    
+    
+    
+    public void venderJugador(Mundo wor,int IndexJug){
+        DatosYNumeros dat = new DatosYNumeros();
+        Reserva.get(IndexJug).TasarPrecio();
+        int Oferta = Reserva.get(IndexJug).Precio;
+        int MasMenos = dat.RangeRandint(0, 2);
+        int Intentos = dat.RangeRandint(1, 4);
+        Equipo Comprador = wor.getRandomEquipoParaVender(Reserva.get(IndexJug));
+        switch (MasMenos){
+            case 0 ->{
+                Oferta+= dat.RangeRandint(0, Oferta * 3);
+            }
+            case 1 ->{
+                Oferta-= dat.RangeRandint(0, Integer.parseInt(String.valueOf(Math.round(Oferta * 0.5))));
+            }
+        }
+        while (Intentos>0){
+
+        String[] Opciones = {"Aceptar oferta","Pedir más","Arrepentirse"};
+        
+        String Texto =  Comprador.NombreEquipo+" esta interesado en "+Reserva.get(IndexJug).Nombre+" "+Reserva.get(IndexJug).Apellido+"\n están dispuestos a ofrecer $"+Oferta;
+                    
+        int IndexCambio = JOptionPane.showOptionDialog(null,Texto,"Transferencia",JOptionPane.DEFAULT_OPTION,JOptionPane.PLAIN_MESSAGE,null,Opciones,
+        Opciones[0]);
+        
+        switch (IndexCambio){
+            case 0 ->{
+                String Anuncio = Reserva.get(IndexJug).Nombre+" "+Reserva.get(IndexJug).Apellido+" a sido transferido con exito a "+Comprador.NombreEquipo;
+                Comprador.Reserva.add(Reserva.get(IndexJug));
+                Reserva.remove(IndexJug);
+                Comprador.Dinero -= Oferta;
+                this.Dinero+= Oferta;
+                
+                Intentos = -1;
+                
+                JOptionPane.showMessageDialog(null, 
+                              Anuncio, 
+                              "Mucha suerte!", 
+                              JOptionPane.INFORMATION_MESSAGE);
+                
+                
+            }
+            case 1 ->{
+                int SubirOno = dat.RangeRandint(0, 1);
+                
+                switch (SubirOno){
+                    case 0 ->{
+                        Oferta+=dat.RangeRandint(Integer.parseInt(String.valueOf(Math.round(Oferta * 0.2))), Oferta * 2);
+                    }
+                    case 1 ->{
+                        Intentos--;
+                    }
+                }
+            }
+        }
+        
+    }
+        if (Intentos==0){
+            JOptionPane.showMessageDialog(null, 
+                              "El equipo interesado cesó las negociaciones.", 
+                              "Ups", 
+                              JOptionPane.INFORMATION_MESSAGE);
+        }
+        
+    }
+    
+    public void campanaPublicidad(){
+        JTextField grat = new JTextField();        
+        grat.addKeyListener(new KeyAdapter() {
+        @Override
+        public void keyTyped(KeyEvent e) {
+            if (!Character.isDigit(e.getKeyChar()) || grat.getText().isEmpty() && e.getKeyChar() == '0'){
+                e.consume();
+            }
+        }});
+        String[] Opir = {"Realizar campaña publicitaria","Arrepentirse"};
+        int Casiii = JOptionPane.showOptionDialog(null, grat,"¿Realizar campaña publicitaria para conseguir mas fans?",JOptionPane.DEFAULT_OPTION,JOptionPane.PLAIN_MESSAGE,null,Opir,
+                Opir[0]);
+        switch (Casiii){
+            case 0 ->{
+                if (Integer.parseInt(grat.getText())<500000){
+                    JOptionPane.showMessageDialog(null, 
+                              "Inversion minima de $500.000!!!", 
+                              "Ups", 
+                              JOptionPane.WARNING_MESSAGE);
+                }else{
+                    if (Integer.parseInt(grat.getText())>this.Dinero){
+                        JOptionPane.showMessageDialog(null, 
+                              "No te alcanza!!!", 
+                              "Ups", 
+                              JOptionPane.WARNING_MESSAGE);
+                    }else{
+                        DatosYNumeros dat = new DatosYNumeros(); 
+                        int fansNuevos = dat.RangeRandint(0, Integer.parseInt(grat.getText())/1000);
+                        this.Fans+=fansNuevos;
+                        JOptionPane.showMessageDialog(null, 
+                              "Invertiste "+grat.getText()+" y obtuviste "+fansNuevos+" fans nuevos!!!", 
+                              "Campaña publicitaria", 
+                              JOptionPane.INFORMATION_MESSAGE);
+                    } 
+                }
+            }
+        }
+    }
+    
+    
+    
+    
+    
     
 }
